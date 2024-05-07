@@ -1,0 +1,10 @@
+-> Preciso criar um site que eu possa adicionar usuários, removê-los e editá-los
+
+-> Criar uma rota para cada uma dessas operações.
+    show_users (GET)        -> Ver os usuários
+    new_user   (POST)       -> Inserir os dados do novo usuário
+    form_new_user (GET)     -> o formulário para criar um usuário novo
+    form_edit_user (GET)    -> o formulário para editar um usuário já existente
+    edit_user (POST)        -> atualizar o usuário com as informações da rota anterior
+    delete_user (DELETE)    -> deletar o usuario
+    update_user (PUT)       -> alterar os dados desse usuário
