@@ -1,38 +1,76 @@
-from flask import Blueprint
+from flask import Blueprint, render_template, request, url_for, redirect
 from database.users import USERS
 
 user_route = Blueprint('user', __name__)
 
 """
-    show_users (GET)        -> Ver os usuários
-    new_user   (POST)       -> Inserir os dados do novo usuário
-    form_new_user (GET)     -> o formulário para criar um usuário novo
-    form_edit_user (GET)    -> o formulário para editar um usuário já existente
-    edit_user (POST)        -> atualizar o usuário com as informações da rota anterior
-    delete_user (DELETE)    -> deletar o usuario
-    update_user (PUT)       -> alterar os dados desse usuário
+    (x) show_users (GET)        -> Ver os usuários
+    (x) new_user   (POST)       -> Inserir os dados do novo usuário
+    (x) form_new_user (GET)     -> o formulário para criar um usuário novo
+    () form_edit_user (GET)    -> o formulário para editar um usuário já existente
+    () edit_user (POST)        -> atualizar o usuário com as informações da rota anterior
+    (x) delete_user (DELETE)    -> deletar o usuario
+    () update_user (PUT)       -> alterar os dados desse usuário
 
 """
 
+
 @user_route.route('/')
 def show_users():
-    pass
+    return render_template('users_list.html', users=USERS)
 
-@user_route.route('/', methods=['POST'])
-def new_user():
-    pass
 
 @user_route.route('/new')
-def form_new_user(user_id):
-    pass
+def form_new_user():
+    return render_template('new_user.html')
 
-@user_route.route('/<int:user_id>/edit')
+
+@user_route.route('/create', methods=['POST'])
+def new_user():
+
+    data = request.json
+
+    new_user = {
+        "id": len(USERS) + 1,
+        "name": data['name'],
+        "email": data['email'],
+        "description": data['description'],
+    }
+
+    USERS.append(new_user)
+
+    return redirect(url_for('user.show_users'))
+
+
+@user_route.route('/edit/<int:user_id>')
 def form_edit_user(user_id):
-    pass
+    user = None
+    for u in USERS:
+        if u['id'] == user_id:
+            user = u
+    return render_template('new_user.html', user=user)
 
-@user_route.route('/<int:user_id>/update', methods=['PUT'])
+
+@user_route.route('/update/<int:user_id>', methods=['PUT'])
 def update_user(user_id):
-    pass
+    edited_user = None
 
-@user_route.route('/<int:user_id>/delete', methods=['DELETE'])
-def delete_user(user_id)
+    data = request.json
+
+    for u in USERS:
+        if u['id'] == user_id:
+            u['name'] = data['name']
+            u['email'] = data['email']
+            u['description'] = data['description']
+
+            edited_user = u
+
+    return redirect(url_for('user.show_users'))
+
+
+@user_route.route('/delete/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    global USERS
+    USERS = [u for u in USERS if u["id"] != user_id]
+
+    return redirect(url_for('user.show_users'))

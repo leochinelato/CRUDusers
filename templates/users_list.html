@@ -1,0 +1,35 @@
+{% extends "template.html" %}
+{% block content %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">Name</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <th scope="row">{{ user.id }}</th>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.description }}</td>
+            <td>
+                <a href="{{ url_for('user.form_edit_user', user_id=user.id) }}">
+                    <button class="btn btn-primary">Edit</button>
+                </a>
+                <button class="btn btn-danger" c-delete="{{ url_for('user.delete_user', user_id=user.id) }}"
+                    c-remove-closest="tr">Delete</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('user.form_new_user') }}">
+    <button type="button" class="btn btn-primary">Create New User</button>
+</a>
+
+{% endblock %}

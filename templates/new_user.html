@@ -1,0 +1,35 @@
+{% extends "template.html" %}
+
+{% block content %}
+
+<form
+    class="c-form"
+    c-redirect="{{ url_for('user.show_users') }}"
+    {% if user %}
+        action="{{ url_for('user.update_user', user_id=user.id) }}"
+    {% else %}
+        action="{{ url_for('user.new_user') }}"
+    {% endif %}
+
+        method="{% if user %}PUT{% else %}POST{% endif %}">
+
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name" {% if user %} value="{{user.name}}" {% endif %}>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" {% if user %} value="{{user.email}}" {% endif %}>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Description</label>
+        <input type="text" class="form-control" id="description" name="description" {% if user %} value="{{user.description}}" {% endif %}>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        {% if user %} Save {% else %} Create {% endif %}
+    </button>
+    <a href="{{ url_for('user.show_users') }}"> <button type="button" class="btn btn-secondary">Back</button></a>
+</form>
+
+{% endblock %}
