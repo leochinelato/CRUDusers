@@ -3,7 +3,7 @@ from database.database import db
 
 class User(Model):
     name = CharField()
-    email = CharField()
+    email = CharField(unique=True)
     description = TextField()
 
     class Meta:

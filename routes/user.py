@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, url_for, redirect
+from flask import Blueprint, render_template, request, url_for, redirect, flash
 from database.models.user import User
+from peewee import IntegrityError
 
 user_route = Blueprint('user', __name__)
 
@@ -19,14 +20,21 @@ def form_new_user():
 @user_route.route('/create', methods=['POST'])
 def new_user():
     data = request.json
+    try:
+        new_user = User.create(
+            name=data['name'],
+            email=data['email'],
+            description=data['description'],
+        )
 
-    User.create(
-        name=data['name'],
-        email=data['email'],
-        description=data['description'],
-    )
-
-    return redirect(url_for('user.show_users'))
+        flash(f'User {new_user.name} added successfully', 'success')
+        return {'Created': 'ok'}
+    except IntegrityError:
+        flash(
+            f'CREATE ERROR. This email is already being used by another user.',
+            'error',
+        )
+        return {'Error': 'Not created'}
 
 
 @user_route.route('/edit/<int:user_id>')

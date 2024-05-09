@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<form
+<form 
     class="c-form"
     c-redirect="{{ url_for('user.show_users') }}"
     {% if user %}
@@ -10,8 +10,8 @@
     {% else %}
         action="{{ url_for('user.new_user') }}"
     {% endif %}
-
-        method="{% if user %}PUT{% else %}POST{% endif %}">
+    
+    method="{% if user %}PUT{% else %}POST{% endif %}">
 
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Name</label>
@@ -19,11 +19,13 @@
     </div>
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" name="email" {% if user %} value="{{user.email}}" {% endif %}>
+        <input type="email" class="form-control" id="email" name="email" {% if user %} value="{{user.email}}" {% endif
+            %}>
     </div>
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Description</label>
-        <input type="text" class="form-control" id="description" name="description" {% if user %} value="{{user.description}}" {% endif %}>
+        <input type="text" class="form-control" id="description" name="description" {% if user %}
+            value="{{user.description}}" {% endif %}>
     </div>
 
     <button type="submit" class="btn btn-primary">
