@@ -61,4 +61,4 @@ def delete_user(user_id):
     user = User.get_by_id(user_id)
     user.delete_instance()
 
-    return redirect(url_for('user.show_users'))
+    return {'deleted': 'ok'}
